@@ -21,12 +21,21 @@ const DAY_ORDER = [
   "Sunday",
 ];
 
+// render per-request so "today" tracks the real date, not build time.
+export const dynamic = "force-dynamic";
+
 export default async function ContactPage() {
   const contact = await getContactInfo();
 
   const hours = [...(contact?.officeHours ?? [])].sort(
     (a, b) => DAY_ORDER.indexOf(a.day ?? "") - DAY_ORDER.indexOf(b.day ?? ""),
   );
+
+  // office is in Antipolo, Rizal — compute today in the org's timezone.
+  const today = new Intl.DateTimeFormat("en-US", {
+    weekday: "long",
+    timeZone: "Asia/Manila",
+  }).format(new Date());
 
   return (
     <>
@@ -88,19 +97,41 @@ export default async function ContactPage() {
                     Office hours
                   </h2>
                   <dl className="mt-4 space-y-1.5 text-sm">
-                    {hours.map((h) => (
-                      <div
-                        key={h._key}
-                        className="flex items-center justify-between border-b border-ink/8 py-1.5"
-                      >
-                        <dt className="font-medium text-ink">{h.day}</dt>
-                        <dd className="font-mono text-ink-70">
-                          {h.closed
-                            ? "Closed"
-                            : `${h.opens ?? "?"} - ${h.closes ?? "?"}`}
-                        </dd>
-                      </div>
-                    ))}
+                    {hours.map((h) => {
+                      const isToday = h.day === today;
+                      return (
+                        <div
+                          key={h._key}
+                          className={`flex items-center justify-between py-1.5 ${
+                            isToday
+                              ? "-mx-3 rounded-md bg-teal/8 px-3"
+                              : "border-b border-ink/8"
+                          }`}
+                        >
+                          <dt
+                            className={`flex items-center gap-2 font-medium ${
+                              isToday ? "text-teal" : "text-ink"
+                            }`}
+                          >
+                            {h.day}
+                            {isToday && (
+                              <span className="rounded-full bg-teal/12 px-2 py-0.5 font-mono text-[10px] uppercase tracking-widest text-teal">
+                                Today
+                              </span>
+                            )}
+                          </dt>
+                          <dd
+                            className={`font-mono ${
+                              isToday ? "text-teal" : "text-ink-70"
+                            }`}
+                          >
+                            {h.closed
+                              ? "Closed"
+                              : `${h.opens ?? "?"} - ${h.closes ?? "?"}`}
+                          </dd>
+                        </div>
+                      );
+                    })}
                   </dl>
                 </div>
               )}

@@ -20,10 +20,12 @@ export function ContactForm() {
   const heardId = useId();
   const messageId = useId();
 
+  // mt-auto bottom-aligns the input within its flex-col cell so paired inputs
+  // stay level even when one label wraps to two lines (see grid cells below).
   const field =
-    "mt-1.5 w-full rounded-lg border border-ink/15 bg-linen px-4 py-3 text-ink placeholder:text-ink-50 focus:border-teal";
+    "mt-auto w-full rounded-lg border border-ink/15 bg-linen px-4 py-3 text-ink placeholder:text-ink-50 focus:border-teal";
   const label =
-    "font-mono text-xs uppercase tracking-widest text-ink-70";
+    "mb-1.5 block font-mono text-xs uppercase tracking-widest text-ink-70";
 
   if (state?.ok) {
     return (
@@ -38,8 +40,8 @@ export function ContactForm() {
 
   return (
     <form action={formAction} className="space-y-5">
-      <div className="grid gap-5 sm:grid-cols-2">
-        <div>
+      <div className="grid items-stretch gap-5 sm:grid-cols-2">
+        <div className="flex flex-col">
           <label htmlFor={nameId} className={label}>
             Name
           </label>
@@ -52,7 +54,7 @@ export function ContactForm() {
             className={field}
           />
         </div>
-        <div>
+        <div className="flex flex-col">
           <label htmlFor={emailId} className={label}>
             Email
           </label>
@@ -65,7 +67,7 @@ export function ContactForm() {
             className={field}
           />
         </div>
-        <div>
+        <div className="flex flex-col">
           <label htmlFor={phoneId} className={label}>
             Phone <span className="normal-case text-ink-50">(optional)</span>
           </label>
@@ -77,7 +79,7 @@ export function ContactForm() {
             className={field}
           />
         </div>
-        <div>
+        <div className="flex flex-col">
           <label htmlFor={heardId} className={label}>
             How did you hear about us?{" "}
             <span className="normal-case text-ink-50">(optional)</span>
