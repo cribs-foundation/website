@@ -17,7 +17,7 @@ export function SiteFooter({
   logoUrl: string | null;
 }) {
   return (
-    <footer className="bg-ink text-paper">
+    <footer data-dark className="bg-ink text-paper">
       <div className="mx-auto grid max-w-7xl gap-10 px-5 py-16 sm:px-8 lg:grid-cols-[1.2fr_1fr_1fr]">
         <div>
           <div className="flex items-center gap-2.5 font-display text-lg font-extrabold">
@@ -57,7 +57,7 @@ export function SiteFooter({
         </div>
 
         <div>
-          <h2 className="font-mono text-xs uppercase tracking-widest text-paper/50">
+          <h2 className="font-mono text-xs uppercase tracking-widest text-paper/60">
             Contact
           </h2>
           <address className="mt-4 space-y-2 text-sm not-italic text-paper/80">
@@ -74,7 +74,7 @@ export function SiteFooter({
             )}
             {(contact?.phones ?? []).map((ph) => (
               <p key={ph._key}>
-                {ph.label && <span className="text-paper/50">{ph.label}: </span>}
+                {ph.label && <span className="text-paper/60">{ph.label}: </span>}
                 {ph.number && (
                   <a
                     href={`tel:${ph.number.replace(/\s+/g, "")}`}
@@ -89,7 +89,7 @@ export function SiteFooter({
         </div>
 
         <div>
-          <h2 className="font-mono text-xs uppercase tracking-widest text-paper/50">
+          <h2 className="font-mono text-xs uppercase tracking-widest text-paper/60">
             Explore
           </h2>
           <ul className="mt-4 space-y-2 text-sm text-paper/80">
@@ -112,7 +112,7 @@ export function SiteFooter({
       </div>
 
       <div className="border-t border-paper/12">
-        <div className="mx-auto max-w-7xl px-5 py-6 text-xs text-paper/50 sm:px-8">
+        <div className="mx-auto max-w-7xl px-5 py-6 text-xs text-paper/60 sm:px-8">
           {settings?.footerCopyright ??
             `Copyright © ${new Date().getFullYear()} ${orgName}`}
         </div>

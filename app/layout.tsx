@@ -41,9 +41,7 @@ const FALLBACK_TITLE =
   "CRIBS Foundation, Inc. | Caring for children since 1974";
 const FALLBACK_DESCRIPTION =
   "A DSWD-licensed, PCNC-certified Philippine child-welfare NGO. For 50 years CRIBS has given abandoned, neglected, and surrendered babies and young survivors of abuse a safe and loving home.";
-// TODO(deploy): set to the real production domain. their live site is
-// cribsfoundationinc.org. see README "Deploy domain".
-const SITE_URL = "https://cribsfoundation.org";
+const SITE_URL = "https://cribsfoundationinc.org";
 
 export async function generateMetadata(): Promise<Metadata> {
   const [settings, home] = await Promise.all([getSiteSettings(), getHomePage()]);
@@ -72,7 +70,11 @@ export async function generateMetadata(): Promise<Metadata> {
       ...(ogImage ? { images: [{ url: ogImage, width: 1200, height: 630 }] } : {}),
     },
     twitter: {
-      card: ogImage ? "summary_large_image" : "summary",
+      // when Sanity has an image, force the large card. when it doesn't, leave
+      // `card` UNSET so Next's metadata resolver auto-selects summary_large_image
+      // once the file-based app/opengraph-image.tsx card supplies a twitter image
+      // (hardcoding "summary" here would keep a small card under the large image).
+      ...(ogImage ? { card: "summary_large_image" as const } : {}),
       title,
       description,
     },

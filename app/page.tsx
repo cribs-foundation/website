@@ -1,11 +1,15 @@
 import Link from "next/link";
 
-import { HeroArt, SectionArt } from "@/components/abstract-art";
+import {
+  CareThreadWeave,
+  SectionArt,
+  ShelterArcField,
+} from "@/components/abstract-art";
+import { HeroVideo } from "@/components/hero-video";
 import { NewsletterForm } from "@/components/newsletter-form";
 import { PortableText } from "@/components/portable-text";
 import { PortableTextPlain } from "@/components/portable-text-plain";
 import { Reveal } from "@/components/reveal";
-import { SanityImage } from "@/components/sanity-image";
 import { StatCounter } from "@/components/stat-counter";
 import { getContactInfo, getSiteSettings } from "@/lib/sanity/chrome";
 import { sanityFetch } from "@/lib/sanity/fetch";
@@ -15,7 +19,7 @@ import {
   IMPACT_STATS_QUERY,
 } from "@/lib/sanity/queries";
 
-const SITE_URL = "https://cribsfoundation.org";
+const SITE_URL = "https://cribsfoundationinc.org";
 
 // overview teasers that link out to the deep routes.
 const TEASERS = [
@@ -134,93 +138,13 @@ export default async function Home() {
 
       <main id="top">
         {/* ---------- HERO ---------- */}
-        <section
-          aria-labelledby="hero-heading"
-          className="relative overflow-hidden"
-        >
-          <div className="mx-auto grid max-w-7xl items-stretch gap-0 px-5 sm:px-8 lg:grid-cols-[1.05fr_0.95fr]">
-            <div className="flex min-h-[calc(100dvh-5rem)] flex-col justify-center py-16 pr-0 lg:py-24 lg:pr-12">
-              <p className="mb-5 inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-teal">
-                <span className="h-px w-8 bg-marigold" aria-hidden="true" />
-                Since 1974
-              </p>
-              <h1
-                id="hero-heading"
-                className="text-display font-display font-extrabold text-ink"
-              >
-                {home?.heroHeadline ? (
-                  home.heroHeadline
-                ) : (
-                  <>
-                    Caring for the Philippines&rsquo; most{" "}
-                    <span className="text-teal">vulnerable children</span>.
-                  </>
-                )}
-              </h1>
-              <p className="mt-6 max-w-[54ch] text-lg leading-relaxed text-ink-70">
-                {home?.heroSubtext ??
-                  "A loving, safe home for abandoned, neglected and surrendered babies, and for young survivors of abuse."}
-              </p>
-
-              <div className="mt-9 flex flex-wrap items-center gap-4">
-                <Link
-                  href="/donate"
-                  className="rounded-full bg-teal px-7 py-3.5 text-base font-semibold text-linen shadow-lift transition-colors hover:bg-harbor"
-                >
-                  Donate
-                </Link>
-                <Link
-                  href="/about"
-                  className="text-base font-semibold text-teal underline decoration-1 underline-offset-4 hover:text-harbor"
-                >
-                  Our story since 1974
-                </Link>
-              </div>
-
-              <p className="mt-8 font-mono text-xs uppercase tracking-wider text-ink-50">
-                50 years of care{" "}
-                <span className="text-marigold-ink">·</span> DSWD-licensed since
-                1983
-              </p>
-            </div>
-
-            {/* hero media: seeded Vimeo video, else the photo collage, else art.
-               video is not autoplayed (viewer presses play), so reduced-motion
-               is respected without a client boundary. */}
-            {home?.heroVideoUrl ? (
-              <div className="flex min-h-[42vh] items-center py-8 lg:min-h-full lg:py-16 lg:pl-4">
-                <div className="w-full overflow-hidden rounded-2xl bg-harbor shadow-lift ring-1 ring-ink/10">
-                  <div className="aspect-video">
-                    <iframe
-                      src={`${home.heroVideoUrl}?title=0&byline=0&portrait=0`}
-                      title="CRIBS Foundation: fifty years of caring for vulnerable children"
-                      loading="lazy"
-                      allow="fullscreen; picture-in-picture"
-                      allowFullScreen
-                      className="h-full w-full"
-                    />
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className="relative -mx-5 min-h-[42vh] overflow-hidden sm:-mx-8 lg:mx-0 lg:min-h-full">
-                {home?.heroImages?.[0]?.asset ? (
-                  <SanityImage
-                    source={home.heroImages[0]}
-                    alt={home.heroImages[0].alt ?? ""}
-                    width={900}
-                    height={1100}
-                    priority
-                    sizes="(max-width: 1024px) 100vw, 45vw"
-                    className="absolute inset-0 h-full w-full object-cover"
-                  />
-                ) : (
-                  <HeroArt className="absolute inset-0 h-full w-full" />
-                )}
-              </div>
-            )}
-          </div>
-        </section>
+        {/* full-bleed poster + click-to-play video takeover. the self-hosted
+           /public/hero.mp4 is now the primary hero; the old heroVideoUrl (Vimeo)
+           and heroImages/HeroArt branches are retired in favor of it. */}
+        <HeroVideo
+          headline={home?.heroHeadline ?? null}
+          subtext={home?.heroSubtext ?? null}
+        />
 
         {/* ---------- TRUST BAR ---------- */}
         <section aria-label="Credentials" className="border-y border-ink/8 bg-band">
@@ -276,10 +200,16 @@ export default async function Home() {
         </section>
 
         {/* ---------- MISSION & VISION ---------- */}
+        {/* Variant A grain (opaque light surface) + Variant B care-thread weave
+           behind the content. the SVG is absolute/aria-hidden; .paper-grain lifts
+           real content (the grid) above both decorative layers. */}
         <section
           aria-labelledby="mission-heading"
-          className="border-y border-ink/8 bg-linen"
+          className="paper-grain relative overflow-hidden border-y border-ink/8 bg-linen"
         >
+          <CareThreadWeave
+            className="pointer-events-none absolute inset-0 h-full w-full"
+          />
           <div className="mx-auto grid max-w-7xl gap-12 px-5 py-20 sm:px-8 lg:grid-cols-2 lg:py-28">
             <Reveal>
               <h2
@@ -384,11 +314,18 @@ export default async function Home() {
         )}
 
         {/* ---------- DONATE CTA (links to /donate) ---------- */}
+        {/* Variant C shelter-arc field on the dark ground: faint paper arcs rising
+           from the bottom edge with one marigold sunrise node. absolute/aria-hidden
+           behind the content, which is relative so white text keeps AA. */}
         <section
+          data-dark
           aria-labelledby="donate-cta-heading"
-          className="bg-harbor text-linen"
+          className="relative overflow-hidden bg-harbor text-linen"
         >
-          <div className="mx-auto max-w-3xl px-5 py-20 text-center sm:px-8 lg:py-24">
+          <ShelterArcField
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-2/3 w-full"
+          />
+          <div className="relative mx-auto max-w-3xl px-5 py-20 text-center sm:px-8 lg:py-24">
             <h2
               id="donate-cta-heading"
               className="text-h2 font-display font-bold"
@@ -410,6 +347,7 @@ export default async function Home() {
 
         {/* ---------- NEWSLETTER ---------- */}
         <section
+          data-dark
           aria-labelledby="newsletter-heading"
           className="bg-teal text-linen"
         >

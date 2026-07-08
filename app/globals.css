@@ -53,6 +53,60 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+/*
+  Variant A — paper grain. seamless 512px warm off-white tile applied as a
+  universal faint warmth on LIGHT surfaces (paper body + band/linen sections).
+  decorative, pointer-events-none, painted in a fixed ::before layer under all
+  content so it never shifts layout. opacity kept low enough to hold a <=~2%
+  luminance delta over the base token: the asset is already faint, so overlaid
+  text keeps WCAG AA and the tile reads as "not flat", not as a pattern. webp
+  primary with png fallback via image-set(). the fixed layer covers the body
+  (paper) ground; opaque light sections (band/linen) re-assert the grain via the
+  .paper-grain utility so it shows through them too. NEVER on dark grounds (hero,
+  harbor CTA, teal, ink footer) — those get Variant C or nothing.
+*/
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  /* -1 keeps the grain behind ALL content (positioned or not) without trapping
+     non-positioned children the way z-index:0 would; still above the body's own
+     paper background. */
+  z-index: -1;
+  pointer-events: none;
+  background-image: image-set(
+    url("/textures/paper-grain.webp") type("image/webp"),
+    url("/textures/paper-grain.png") type("image/png")
+  );
+  background-repeat: repeat;
+  background-size: 512px 512px;
+  opacity: 0.5;
+}
+/* re-assert the grain on opaque light sections (band/linen) that paint over the
+   body ground. host must not already establish a z-context that traps content. */
+.paper-grain {
+  position: relative;
+}
+.paper-grain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: image-set(
+    url("/textures/paper-grain.webp") type("image/webp"),
+    url("/textures/paper-grain.png") type("image/png")
+  );
+  background-repeat: repeat;
+  background-size: 512px 512px;
+  opacity: 0.5;
+}
+/* keep real content above the grain layer on paper-grain hosts. */
+.paper-grain > * {
+  position: relative;
+  z-index: 1;
+}
+
 /* fluid display scale (1.25). */
 .text-display {
   font-size: clamp(2.5rem, 5vw, 4.5rem);
@@ -76,6 +130,12 @@ body {
   outline: 2px solid var(--color-teal);
   outline-offset: 3px;
   border-radius: 2px;
+}
+
+/* on dark grounds the teal ring drops below the 3:1 WCAG floor (teal-on-harbor
+   is 1.59:1); switch to a linen ring inside any [data-dark] section. */
+[data-dark] :where(a, button, input, [tabindex]):focus-visible {
+  outline-color: var(--color-linen);
 }
 
 /* honor reduced-motion globally: kill transitions/animations. */

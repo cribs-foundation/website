@@ -129,6 +129,74 @@ export function AbstractDonateQR({ className = "" }: { className?: string }) {
   );
 }
 
+// Variant B — care-thread weave. one thin continuous marigold line meandering
+// sparsely (large empty spaces) with a few small filled marigold nodes, echoing
+// HeroArt's care thread + SectionArt's "path" motif. decorative background for
+// ONE light band. line at marigold 7%, nodes 10% — legal raw marigold since it's
+// a graphic fill that never touches text. absolutely positioned by the caller
+// (pointer-events-none, aria-hidden); content sits above it and stays legible.
+export function CareThreadWeave({ className = "" }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 1200 600"
+      className={className}
+      role="presentation"
+      aria-hidden="true"
+      preserveAspectRatio="xMidYMid slice"
+    >
+      {/* the single meandering care thread. sparse, with wide empty gaps. */}
+      <path
+        d="M-40 150 C 160 60 240 260 420 210 S 620 40 820 150 S 1080 320 1260 210"
+        fill="none"
+        stroke="#e9a426"
+        strokeOpacity="0.07"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+      {/* a few small filled marigold nodes along the thread. */}
+      <g fill="#e9a426" fillOpacity="0.1">
+        <circle cx="420" cy="210" r="5" />
+        <circle cx="820" cy="150" r="4" />
+        <circle cx="1080" cy="268" r="3.5" />
+      </g>
+    </svg>
+  );
+}
+
+// Variant C — shelter-arc field (dark). concentric "cribs cradle" arcs from
+// HeroArt, scaled large and faint, rising from the bottom edge: sunrise behind a
+// home. strokes in paper at 8% on the dark ground (mirrors HeroArt's ~0.16 but
+// lower), with one marigold node at 12% as the sunrise point (graphic fill,
+// legal). decorative background for dark CTA blocks / footer. absolutely
+// positioned by the caller (pointer-events-none, aria-hidden); overlaid
+// white / teal-on-ink text keeps AA — arcs stay clear of text baselines.
+export function ShelterArcField({ className = "" }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 1200 400"
+      className={className}
+      role="presentation"
+      aria-hidden="true"
+      preserveAspectRatio="xMidYMid slice"
+    >
+      {/* concentric shelter arcs rising from the bottom edge. */}
+      <g
+        fill="none"
+        stroke="#f7f4ed"
+        strokeOpacity="0.08"
+        strokeWidth="1.5"
+      >
+        <path d="M600 400 A360 360 0 0 1 960 400" />
+        <path d="M600 400 A280 280 0 0 1 880 400" />
+        <path d="M600 400 A200 200 0 0 1 800 400" />
+        <path d="M600 400 A120 120 0 0 1 720 400" />
+      </g>
+      {/* the sunrise point. */}
+      <circle cx="600" cy="400" r="6" fill="#e9a426" fillOpacity="0.12" />
+    </svg>
+  );
+}
+
 export function SectionArt({
   motif = "hearth",
   tone = "teal",
