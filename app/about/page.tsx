@@ -10,6 +10,7 @@ import { sanityFetch } from "@/lib/sanity/fetch";
 import {
   HISTORY_MILESTONES_QUERY,
   HOME_PAGE_QUERY,
+  PARTNERS_QUERY,
 } from "@/lib/sanity/queries";
 
 export const metadata: Metadata = {
@@ -22,10 +23,26 @@ export const metadata: Metadata = {
 const KEY_YEARS = new Set([1974, 1983]);
 
 export default async function AboutPage() {
-  const [milestones, home] = await Promise.all([
+  const [milestones, home, partners] = await Promise.all([
     sanityFetch({ query: HISTORY_MILESTONES_QUERY }),
     sanityFetch({ query: HOME_PAGE_QUERY }),
+    sanityFetch({ query: PARTNERS_QUERY }),
   ]);
+
+  // group partners by category for the "Our partners" section. the display order
+  // and labels are curated here; unknown categories fall through to "Other".
+  const PARTNER_CATEGORIES: { value: string; label: string }[] = [
+    { value: "foundation", label: "Foundations" },
+    { value: "corporate", label: "Corporate" },
+    { value: "government_ngo", label: "Government & NGO" },
+    { value: "civic_volunteer", label: "Civic & volunteer" },
+    { value: "adoptive_families", label: "Adoptive families" },
+    { value: "other", label: "Other" },
+  ];
+  const partnerGroups = PARTNER_CATEGORIES.map((c) => ({
+    ...c,
+    items: partners.filter((p) => (p.category ?? "other") === c.value),
+  })).filter((g) => g.items.length > 0);
 
   const timelineItems: TimelineItem[] = milestones
     .filter((m): m is typeof m & { year: number } => typeof m.year === "number")
@@ -102,6 +119,58 @@ export default async function AboutPage() {
           )}
         </div>
       </section>
+
+      {/* ---------- OUR PARTNERS ---------- */}
+      {partnerGroups.length > 0 && (
+        <section
+          aria-labelledby="partners-heading"
+          className="mx-auto max-w-7xl px-5 py-20 sm:px-8 lg:py-28"
+        >
+          <Reveal className="mb-14 text-center">
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-marigold-ink">
+              With gratitude
+            </p>
+            <h2
+              id="partners-heading"
+              className="mx-auto mt-3 max-w-[20ch] text-h2 font-display font-bold text-ink"
+            >
+              Our partners
+            </h2>
+            <p className="mx-auto mt-4 max-w-[52ch] text-base leading-relaxed text-ink-70">
+              The circle of care is wide. We are grateful to the families,
+              companies, foundations, and volunteers who make our work possible.
+            </p>
+          </Reveal>
+
+          <div className="space-y-12">
+            {partnerGroups.map((group) => (
+              <Reveal key={group.value}>
+                <h3 className="font-mono text-xs uppercase tracking-widest text-ink-50">
+                  {group.label}
+                </h3>
+                <ul className="mt-4 grid gap-x-8 gap-y-2.5 border-t border-ink/8 pt-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {group.items.map((p) => (
+                    <li key={p._id} className="text-ink-70">
+                      {p.url ? (
+                        <a
+                          href={p.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="underline decoration-1 underline-offset-2 transition-colors hover:text-teal"
+                        >
+                          {p.name}
+                        </a>
+                      ) : (
+                        p.name
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </Reveal>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* ---------- CTA ---------- */}
       <section className="mx-auto max-w-7xl px-5 py-20 text-center sm:px-8 lg:py-24">

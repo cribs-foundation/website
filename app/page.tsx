@@ -2,7 +2,6 @@ import Link from "next/link";
 
 import {
   CareThreadWeave,
-  SectionArt,
   ShelterArcField,
 } from "@/components/abstract-art";
 import { HeroVideo } from "@/components/hero-video";
@@ -13,9 +12,10 @@ import { Reveal } from "@/components/reveal";
 import { StatCounter } from "@/components/stat-counter";
 import { getContactInfo, getSiteSettings } from "@/lib/sanity/chrome";
 import { sanityFetch } from "@/lib/sanity/fetch";
+import { SanityImage } from "@/components/sanity-image";
 import {
-  ACCREDITATIONS_QUERY,
   HOME_PAGE_QUERY,
+  HOME_TEASER_IMAGES_QUERY,
   IMPACT_STATS_QUERY,
 } from "@/lib/sanity/queries";
 
@@ -25,6 +25,7 @@ const SITE_URL = "https://cribsfoundationinc.org";
 const TEASERS = [
   {
     href: "/about",
+    imgKey: "about" as const,
     title: "Transforming lives",
     body: "The first foster-care NGO in the Philippines, an unbroken line of care from 1974 to today.",
     motif: "path" as const,
@@ -32,6 +33,7 @@ const TEASERS = [
   },
   {
     href: "/programs",
+    imgKey: "programs" as const,
     title: "A continuous circle of care",
     body: "From the Receiving Home for infants to New Beginnings for survivors: holistic healing at every age.",
     motif: "hearth" as const,
@@ -39,6 +41,7 @@ const TEASERS = [
   },
   {
     href: "/gallery",
+    imgKey: "gallery" as const,
     title: "The faces of our work",
     body: "Little Angels and volunteers, the everyday joy behind fifty years of care.",
     motif: "hands" as const,
@@ -46,6 +49,7 @@ const TEASERS = [
   },
   {
     href: "/obra-ni-ate-ko",
+    imgKey: "obra" as const,
     title: "Art that funds healing",
     body: "A catalog of paintings whose sale supports the recovery of the young women of New Beginnings.",
     motif: "bloom" as const,
@@ -54,38 +58,22 @@ const TEASERS = [
 ];
 
 export default async function Home() {
-  const [settings, home, stats, accreditations, contact] = await Promise.all([
+  const [settings, home, stats, contact, teaserImages] = await Promise.all([
     getSiteSettings(),
     sanityFetch({ query: HOME_PAGE_QUERY }),
     sanityFetch({ query: IMPACT_STATS_QUERY }),
-    sanityFetch({ query: ACCREDITATIONS_QUERY }),
     getContactInfo(),
+    sanityFetch({ query: HOME_TEASER_IMAGES_QUERY }),
   ]);
 
   const orgName = settings?.orgName ?? "CRIBS Foundation, Inc.";
 
-  // trust bar: three headline peer credentials, keyed to the accreditation
-  // records so the detail line stays sourced from the CMS.
-  const findAccred = (needle: string) =>
-    accreditations.find((a) => a.name?.toLowerCase().includes(needle))?.name;
+  // trust bar: three headline peer credentials. the eyebrow is the short badge;
+  // the detail complements it without restating the same words.
   const trustCredentials = [
-    {
-      k: "Since 1974",
-      v:
-        findAccred("first foster") ??
-        "First foster-care NGO in the Philippines",
-    },
-    {
-      k: "DSWD-licensed",
-      v: findAccred("dswd") ?? "Child welfare agency since 1983",
-    },
-    {
-      k: "PCNC-certified",
-      v:
-        findAccred("sec-registered") ??
-        findAccred("pcnc") ??
-        "SEC-registered non-profit (1979)",
-    },
+    { k: "Since 1974", v: "First foster-care NGO in the Philippines" },
+    { k: "DSWD-licensed", v: "Child welfare agency since 1983" },
+    { k: "PCNC-certified", v: "SEC-registered non-profit (1979)" },
   ];
 
   // impact stats: the "First foster-care NGO" entry (value 1, no suffix) is a
@@ -263,10 +251,15 @@ export default async function Home() {
                   className="group flex h-full flex-col overflow-hidden rounded-2xl border border-ink/8 bg-linen shadow-card transition-shadow hover:shadow-lift"
                 >
                   <div className="h-40 overflow-hidden">
-                    <SectionArt
-                      motif={t.motif}
-                      tone={t.tone}
-                      className="h-full w-full"
+                    <SanityImage
+                      source={teaserImages?.[t.imgKey] ?? null}
+                      alt=""
+                      width={640}
+                      height={320}
+                      sizes="(max-width: 640px) 100vw, 50vw"
+                      fallbackMotif={t.motif}
+                      fallbackTone={t.tone}
+                      className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                     />
                   </div>
                   <div className="flex flex-1 flex-col p-7">

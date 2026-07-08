@@ -16,9 +16,15 @@ const FALLBACK_MOTIFS = ["hands", "bloom", "hearth", "path"] as const;
 export default async function GalleryPage() {
   const albums = await sanityFetch({ query: GALLERY_ALBUMS_QUERY });
 
+  // only show albums that actually have photos — skip empty albums so they don't
+  // render as brand-art placeholder tiles.
+  const albumsWithPhotos = albums.filter((a) =>
+    (a.images ?? []).some((img) => img?.asset),
+  );
+
   // photo-led opening: lead with the first album image (falls back to brand
   // art via SanityImage when no photo is uploaded yet).
-  const leadImage = albums
+  const leadImage = albumsWithPhotos
     .flatMap((a) => a.images ?? [])
     .find((img) => img?.asset);
 
@@ -64,11 +70,11 @@ export default async function GalleryPage() {
       </section>
 
       <div className="mx-auto max-w-7xl px-5 py-16 sm:px-8 lg:py-24">
-        {albums.length === 0 ? (
+        {albumsWithPhotos.length === 0 ? (
           <p className="text-ink-50">Photo albums are being published soon.</p>
         ) : (
           <div className="space-y-20">
-            {albums.map((album) => {
+            {albumsWithPhotos.map((album) => {
               const images = (album.images ?? []).filter((img) => img?.asset);
               return (
                 <section

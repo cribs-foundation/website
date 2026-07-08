@@ -91,23 +91,23 @@ export function HeroVideo({ headline, subtext }: HeroVideoProps) {
           </p>
 
           <div className="mt-9 flex flex-wrap items-center gap-5">
-            <button
-              type="button"
-              onClick={play}
-              aria-label="Play the CRIBS film"
-              className="inline-flex items-center gap-3 rounded-full bg-linen/95 py-2 pl-2 pr-6 text-base font-semibold text-ink shadow-lift transition-colors hover:bg-linen"
-            >
-              <span className="flex h-11 w-11 items-center justify-center rounded-full bg-teal text-linen">
-                <Play weight="fill" className="h-5 w-5" aria-hidden="true" />
-              </span>
-              Watch the film
-            </button>
             <Link
               href="/donate"
               className="rounded-full bg-teal px-7 py-3.5 text-base font-semibold text-linen shadow-lift transition-colors hover:bg-harbor"
             >
               Donate
             </Link>
+            <button
+              type="button"
+              onClick={play}
+              aria-label="Play the CRIBS film"
+              className="inline-flex items-center gap-2.5 rounded-full border border-paper/30 bg-paper/10 py-1.5 pl-1.5 pr-5 text-base font-semibold text-paper backdrop-blur-sm transition-colors hover:border-paper/50 hover:bg-paper/20"
+            >
+              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-paper/20 text-paper">
+                <Play weight="fill" className="h-4 w-4" aria-hidden="true" />
+              </span>
+              Watch the film
+            </button>
             <Link
               href="/about"
               className="text-base font-semibold text-teal-on-ink underline decoration-1 underline-offset-4 hover:text-paper"

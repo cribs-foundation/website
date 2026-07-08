@@ -1,3 +1,4 @@
+import { MapPin, NavigationArrow } from "@phosphor-icons/react/dist/ssr";
 import type { Metadata } from "next";
 
 import { ContactForm } from "@/components/contact-form";
@@ -136,16 +137,41 @@ export default async function ContactPage() {
                 </div>
               )}
 
-              {contact?.mapLink && (
-                <a
-                  href={contact.mapLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block font-semibold text-teal underline decoration-1 underline-offset-4 hover:text-harbor"
+              {/* map placeholder — a live Google Maps embed can drop in here once
+                 an API key is configured; until then this static card keeps the
+                 layout intact and still routes people to directions. */}
+              <div className="overflow-hidden rounded-2xl border border-ink/8 bg-linen shadow-card">
+                <div
+                  aria-hidden="true"
+                  className="relative flex h-44 items-center justify-center bg-band"
+                  style={{
+                    backgroundImage:
+                      "linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px)",
+                    backgroundSize: "28px 28px",
+                  }}
                 >
-                  Open in maps
-                </a>
-              )}
+                  <MapPin
+                    weight="fill"
+                    className="size-10 text-marigold-ink drop-shadow-sm"
+                  />
+                </div>
+                <div className="flex flex-wrap items-center justify-between gap-3 p-4">
+                  <p className="text-sm text-ink-70">
+                    {contact?.address ?? "Antipolo City, Rizal, Philippines"}
+                  </p>
+                  {contact?.mapLink && (
+                    <a
+                      href={contact.mapLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 rounded-full bg-teal px-4 py-2 text-sm font-semibold text-linen transition-colors hover:bg-harbor"
+                    >
+                      <NavigationArrow weight="fill" className="size-4" />
+                      Get directions
+                    </a>
+                  )}
+                </div>
+              </div>
             </div>
           </Reveal>
 

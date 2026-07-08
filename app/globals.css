@@ -101,8 +101,10 @@ body::before {
   background-size: 512px 512px;
   opacity: 0.5;
 }
-/* keep real content above the grain layer on paper-grain hosts. */
-.paper-grain > * {
+/* keep real content above the grain layer on paper-grain hosts. decorative
+   backgrounds (aria-hidden, absolutely positioned) are excluded so they keep
+   their own positioning instead of being forced into flow. */
+.paper-grain > *:not([aria-hidden="true"]) {
   position: relative;
   z-index: 1;
 }

@@ -98,12 +98,15 @@ export default async function DonatePage() {
 
           {/* ---------- QR / GCASH ---------- */}
           <Reveal delayMs={120}>
-            <div className="rounded-2xl border border-ink/8 bg-linen p-6 shadow-card sm:p-8">
-              <h2 className="font-display text-2xl font-bold text-ink">
-                Give by QR Ph / GCash
-              </h2>
+            <h2 className="font-display text-2xl font-bold text-ink">
+              Give by QR Ph / GCash
+            </h2>
+            <p className="mt-1 text-sm text-ink-50">
+              Scan the code with any QR Ph-enabled banking app.
+            </p>
 
-              <div className="mt-6 flex flex-col items-center gap-4 rounded-xl border border-ink/8 bg-paper p-6 text-center">
+            <div className="mt-6 rounded-2xl border border-ink/8 bg-linen p-6 shadow-card sm:p-8">
+              <div className="flex flex-col items-center gap-4 rounded-xl border border-ink/8 bg-paper p-6 text-center">
                 {qrUrl ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img

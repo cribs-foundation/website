@@ -133,6 +133,17 @@ export const PARTNERS_QUERY = defineQuery(`
   }
 `);
 
+// one representative photo per homepage explore-teaser, pulled from the real
+// content each teaser links to (falls back to brand art when none exists).
+export const HOME_TEASER_IMAGES_QUERY = defineQuery(`
+  {
+    "about": *[_id == "homePage"][0].heroImages[0],
+    "programs": *[_type == "program" && defined(image)] | order(order asc)[0].image,
+    "gallery": (*[_type == "galleryAlbum" && count(images[defined(asset)]) > 0] | order(order asc)[0].images[defined(asset)])[0],
+    "obra": (*[_type == "obraCategory" && count(images[defined(asset)]) > 0] | order(order asc)[0].images[defined(asset)])[0]
+  }
+`);
+
 export const ACCREDITATIONS_QUERY = defineQuery(`
   *[_type == "accreditation"] | order(order asc){
     _id,
