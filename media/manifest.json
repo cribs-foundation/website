@@ -1,0 +1,72 @@
+{
+  "_note": "maps each downloaded media file to the sanity document/field the seed attaches it to. source: godaddy wsimg cdn https://img1.wsimg.com/isteam/ip/b9471bcf-c21b-4e5a-9928-21dd1b72fbe4/<file> (bare path = original full-res). seed.ts uploads content-addressed assets and attaches by matching key, so re-running is idempotent.",
+  "heroImages": [
+    { "file": "kids1.png", "target": "homePage.heroImages[]", "alt": "CRIBS children smiling together" },
+    { "file": "kids2.png", "target": "homePage.heroImages[]", "alt": "Children in CRIBS Foundation care" },
+    { "file": "kids4.png", "target": "homePage.heroImages[]", "alt": "Young children at the CRIBS home" },
+    { "file": "house sunrise.jpg", "target": "homePage.heroImages[]", "alt": "The CRIBS Foundation home at sunrise" },
+    { "file": "volunteers1.png", "target": "homePage.heroImages[]", "alt": "CRIBS volunteers with the children" }
+  ],
+  "quotes": [
+    { "file": "Quote1.png", "target": "homePage.quotes[0].image" },
+    { "file": "Quote2.png", "target": "homePage.quotes[1].image" },
+    { "file": "Quote3.png", "target": "homePage.quotes[2].image" },
+    { "file": "Quote4.png", "target": "homePage.quotes[3].image" },
+    { "file": "Quote5.png", "target": "homePage.quotes[4].image" }
+  ],
+  "programs": [
+    { "file": "PSimg1.png", "target": "program[order=0].image", "program": "New Beginnings Program" },
+    { "file": "PSimg2.png", "target": "program[order=1].image", "program": "Receiving Home Program" },
+    { "file": "PSimg3.png", "target": "program[order=2].image", "program": "Volunteer and Resource Program" },
+    { "file": "PSimg4.png", "target": "program[order=3].image", "program": "Community Advocacy and Prevention" },
+    { "file": "PSimg5.png", "target": "program[order=4].image", "program": "Placement Services" },
+    { "file": "PSimg6.png", "target": "program[order=5].image", "program": "Post-Residential Care Services" }
+  ],
+  "galleryAlbums": {
+    "_note": "grouping corrected against the live original site by dom y-position: little angels = every smile* photo (smile3 never existed on the cdn, so skipped); volunteers = a separate v1..v10 set that was never previously downloaded. v7.png is byte-identical to volunteers1.png, so its content-addressed asset dedupes to that existing hero upload.",
+    "little-angels": [
+      { "file": "smile1.png", "target": "galleryAlbum(little-angels).images[]", "alt": "A CRIBS child smiling" },
+      { "file": "smile2.png", "target": "galleryAlbum(little-angels).images[]", "alt": "A CRIBS child smiling" },
+      { "file": "smile4.png", "target": "galleryAlbum(little-angels).images[]", "alt": "A CRIBS child smiling" },
+      { "file": "smile5.png", "target": "galleryAlbum(little-angels).images[]", "alt": "A CRIBS child smiling" },
+      { "file": "smile6.png", "target": "galleryAlbum(little-angels).images[]", "alt": "A CRIBS child smiling" },
+      { "file": "smile7.png", "target": "galleryAlbum(little-angels).images[]", "alt": "A CRIBS child smiling" },
+      { "file": "smile8.png", "target": "galleryAlbum(little-angels).images[]", "alt": "A CRIBS child smiling" },
+      { "file": "smile9.png", "target": "galleryAlbum(little-angels).images[]", "alt": "A CRIBS child smiling" },
+      { "file": "smile10.png", "target": "galleryAlbum(little-angels).images[]", "alt": "A CRIBS child smiling" }
+    ],
+    "volunteers": [
+      { "file": "v1.png", "target": "galleryAlbum(volunteers).images[]", "alt": "CRIBS volunteers with the children" },
+      { "file": "v2.png", "target": "galleryAlbum(volunteers).images[]", "alt": "CRIBS volunteers with the children" },
+      { "file": "v3.png", "target": "galleryAlbum(volunteers).images[]", "alt": "CRIBS volunteers with the children" },
+      { "file": "v4.png", "target": "galleryAlbum(volunteers).images[]", "alt": "CRIBS volunteers with the children" },
+      { "file": "v5.png", "target": "galleryAlbum(volunteers).images[]", "alt": "CRIBS volunteers with the children" },
+      { "file": "v6.png", "target": "galleryAlbum(volunteers).images[]", "alt": "CRIBS volunteers with the children" },
+      { "file": "v7.png", "target": "galleryAlbum(volunteers).images[]", "alt": "CRIBS volunteers with the children" },
+      { "file": "v8.png", "target": "galleryAlbum(volunteers).images[]", "alt": "CRIBS volunteers with the children" },
+      { "file": "v9.png", "target": "galleryAlbum(volunteers).images[]", "alt": "CRIBS volunteers with the children" },
+      { "file": "v10.png", "target": "galleryAlbum(volunteers).images[]", "alt": "CRIBS volunteers with the children" }
+    ]
+  },
+  "milestones": [
+    { "file": "oldpic1.png", "target": "historyMilestone(1974).image" },
+    { "file": "oldpic2.png", "target": "historyMilestone(1979).image" }
+  ],
+  "artworks": [
+    { "file": "mnc1.png", "target": "artwork(madonna_and_child).image", "status": "FAILED", "reason": "404 from cdn; no alternate name resolved. madonna_and_child artwork left imageless." },
+    { "file": "int1.png", "target": "artwork(interpretative).image" },
+    { "file": "land1.png", "target": "artwork(landscape).image" },
+    { "file": "sea1.png", "target": "artwork(seascape).image" },
+    { "file": "cube1.png", "target": "artwork(cubism).image" }
+  ],
+  "donation": [
+    { "file": "qrcode.png", "target": "donationInfo.qrImage" }
+  ],
+  "unassigned_available": [
+    { "file": "Staff1.png", "reason": "no obvious field; no staff/team schema type. downloaded so it isn't lost." },
+    { "file": "playground1.png", "reason": "no obvious field; available for a future about/facilities field." },
+    { "file": "baby-aaf7a48.jpg", "reason": "no obvious field; available for hero/about use." },
+    { "file": "missionImg.png", "reason": "homePage has no mission image field (missionBody is portable text only). available." },
+    { "file": "visionImg.png", "reason": "homePage has no vision image field (visionBody is portable text only). available." }
+  ]
+}

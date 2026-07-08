@@ -1,26 +1,104 @@
 @import "tailwindcss";
 
+/*
+  CRIBS Foundation design tokens — see scratchpad/design-direction.md.
+  light mode only. teal is the ONLY interactive color; marigold is a
+  heritage signal (the "care thread" + since-1974), never a second CTA.
+  fonts are wired as css variables from next/font in app/layout.tsx.
+*/
+@theme {
+  --color-paper: #f7f4ed;
+  --color-linen: #ffffff;
+  --color-band: #efebe1;
+  --color-ink: #0b2e39;
+  --color-teal: #0e6e8c;
+  --color-harbor: #0a4e63;
+  /* marigold is for graphic FILLS only (thread, nodes, underline), never glyphs. */
+  --color-marigold: #e9a426;
+  /* AA-safe warm token for marigold-colored TEXT (>=4.5:1 on paper and linen). */
+  --color-marigold-ink: #8a5e12;
+  /* AA-safe teal for links on the dark ink footer (>=4.5:1 on ink); the page's
+     interactive teal fails on dark, so use this token there instead. */
+  --color-teal-on-ink: #5cc0da;
+
+  /* ink at reduced opacity for muted text/borders (kept teal-tinted). */
+  --color-ink-70: #3a5760;
+  /* bumped for AA: >=4.5:1 on paper/linen (this is real content, not decoration). */
+  --color-ink-50: #5a7078;
+
+  --font-display: var(--font-hanken), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-mulish), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+
+  /* tinted shadows, never black. */
+  --shadow-card: 0 1px 2px rgba(11, 46, 57, 0.04), 0 8px 24px rgba(11, 46, 57, 0.06);
+  --shadow-lift: 0 2px 4px rgba(11, 46, 57, 0.06), 0 16px 40px rgba(11, 46, 57, 0.1);
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: light;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  /* offset anchor targets for the sticky header. */
+  scroll-padding-top: 5.5rem;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* fluid display scale (1.25). */
+.text-display {
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+}
+.text-h2 {
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+.text-stat {
+  font-size: clamp(3rem, 8vw, 6rem);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* visible keyboard focus everywhere (teal). */
+:where(a, button, input, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-teal);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* honor reduced-motion globally: kill transitions/animations. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* calm reveal used by scroll-in sections (opacity + 16px rise). */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal[data-shown="true"] {
+    opacity: 1;
+    transform: none;
+  }
 }
