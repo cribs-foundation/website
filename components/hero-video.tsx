@@ -10,10 +10,10 @@ type HeroVideoProps = {
   subtext: string | null;
 };
 
-// the 33MB film is served from Vercel Blob in prod (set NEXT_PUBLIC_HERO_VIDEO_URL
-// to the blob url); falls back to the local /public/hero.mp4 for dev. the mp4 is
-// gitignored, so the local fallback only exists on machines that ran the transcode.
-const VIDEO_SRC = process.env.NEXT_PUBLIC_HERO_VIDEO_URL ?? "/hero.mp4";
+// the 33MB film is served from Vercel Blob (public, non-secret url), so it's
+// hardcoded here rather than committed — the mp4 is gitignored.
+const VIDEO_SRC =
+  "https://bxtbsprj640e3kd9.public.blob.vercel-storage.com/hero.mp4";
 
 // full-bleed poster hero with a click-to-play video takeover. default state is a
 // static poster + overlaid light text (no motion on load, so reduced-motion is
