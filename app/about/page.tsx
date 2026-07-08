@@ -109,7 +109,7 @@ export default async function AboutPage() {
           <h2 className="mx-auto max-w-[24ch] text-h2 font-display font-bold text-ink">
             Fifty years on, the work continues.
           </h2>
-          <div className="mt-8 flex flex-wrap justify-center gap-4">
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
             <Link
               href="/programs"
               className="rounded-full bg-teal px-7 py-3.5 text-base font-semibold text-linen shadow-lift transition-colors hover:bg-harbor"
