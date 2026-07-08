@@ -63,7 +63,12 @@ type ImageRef = {
 };
 
 // an altImage member (image + required alt) for arrays/objects that use altImage.
-type AltImageRef = ImageRef & { _key?: string; alt: string };
+// _type must be "altImage" (not "image") to match the schema's array member type.
+type AltImageRef = Omit<ImageRef, "_type"> & {
+  _type: "altImage";
+  _key?: string;
+  alt: string;
+};
 
 // uploads a media/ file to sanity and returns an image reference. assets are
 // content-addressed by hash, so uploading the same bytes twice yields the same
@@ -88,7 +93,7 @@ async function uploadAltImage(
   key?: string,
 ): Promise<AltImageRef> {
   const img = await uploadImage(filename);
-  return { ...img, ...(key ? { _key: key } : {}), alt };
+  return { ...img, _type: "altImage", ...(key ? { _key: key } : {}), alt };
 }
 
 // obra artwork photos live on the original site's wsimg cdn, not in media/. the
@@ -118,7 +123,7 @@ async function uploadCdnAltImage(
   key?: string,
 ): Promise<AltImageRef> {
   const img = await uploadCdnImage(filename);
-  return { ...img, ...(key ? { _key: key } : {}), alt };
+  return { ...img, _type: "altImage", ...(key ? { _key: key } : {}), alt };
 }
 
 const TAGLINE =
