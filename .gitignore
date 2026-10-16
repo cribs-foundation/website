@@ -45,3 +45,6 @@ schema.json
 
 # large hero video — served from Vercel Blob, not committed (see components/hero-video.tsx)
 /public/hero.mp4
+
+# seats' per-machine repo memory
+.claude/agent-memory-local/
